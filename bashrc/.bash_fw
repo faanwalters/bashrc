@@ -1,0 +1,35 @@
+
+function diet(){
+  clear
+  echo 'diet'
+  sdk default grails 2.3.6
+  sdk default groovy 2.0.8
+  sdk default java 7.0.181-zulu
+  #java -version
+  #groovy --version
+  #grails -version
+}
+ 
+function saesi(){
+  clear
+  echo 'saesi'
+  sdk default grails 2.1.1
+  sdk default groovy 1.8.8
+  sdk default java 7.0.181-zulu
+  #java -version
+  #groovy --version
+  #grails -version
+}
+
+function ecams(){
+  clear
+  echo 'ecams'
+  echo "--- TODO ----"
+  #sdk default grails 2.1.1
+  #sdk default groovy 1.8.8
+  #sdk default java 7.0.181-zulu
+  #java -version
+  #groovy --version
+  #grails -version
+}
+

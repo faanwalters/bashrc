@@ -1,0 +1,215 @@
+function port() {
+    local grepParam=$1
+    netstat -nlp | grep "$1"
+}
+
+function work(){
+  clear
+  sdk default java 8.0.163-zulu
+  pxup
+  gsp
+  #java -version
+  #groovy --version
+  #grails -version
+}
+
+function workwifi(){
+  clear
+  pxdwn
+  gup
+  sdk default java 8.0.163-zulu
+  #java -version
+  #groovy --version
+  #grails -version
+}
+ 
+function versions(){
+  clear
+  echo 'versions'
+  java -version
+  grails -version
+  groovy --version
+}
+
+function functions(){
+  clear
+  echo 'FUNCTIONS        ALIAS        DESCRIPTION'
+  echo ' '
+  echo 'functions        fn           lists functions'
+  echo 'bandvar          bv           sets env variables for AMIF'
+  echo 'dockerps         dps          lists running docker containers'
+  echo 'dockerpssmall    dpss         more streamlined version of above'
+  echo 'work                          sets env/proxies to at work usinf LAN'
+  echo 'workwifi         ww           sets env/proxies to at work using wifi'
+  echo 'versions                      lists version of Java,Grails and Groovy used by sdkman'
+  echo 'ducks                         memory allocation of folder'
+  echo 'bit9                          sets bit9 timedoverride for mac'
+  echo 'pxshw pxup pxdwn              proxyshow, proxyup, proxydown'
+  echo 'help hlp'
+  echo ' '
+}
+ 
+function pxshw(){
+  clear
+  echo http_proxy=$http_proxy
+  echo https_proxy=$http_proxy
+  echo all_proxy=$http_proxy
+  echo HTTP_PROXY=$http_proxy
+  echo HTTPS_PROXY=$http_proxy
+  echo ALL_PROXY=$http_proxy
+  echo no_proxy=localhost,10.0.2.15,127.0.0.1
+}
+ 
+function pxdwn(){
+  unset http_proxy
+  unset https_proxy
+  unset all_proxy
+  unset HTTP_PROXY
+  unset HTTPS_PROXY
+  unset ALL_PROXY
+}
+ 
+function pxup(){
+  export http_proxy=10.254.8.33:8080
+  export https_proxy=$http_proxy
+  export all_proxy=$http_proxy
+  export HTTP_PROXY=$http_proxy
+  export HTTPS_PROXY=$http_proxy
+  export ALL_PROXY=$http_proxy
+  export no_proxy=localhost,10.0.2.15,127.0.0.1
+}
+ 
+function bandvar(){
+  clear
+  OLD_CLUSTER_DEPLOYMENT=$CLUSTER_DEPLOYMENT
+  OLD_GIT_PULL=$GIT_PULL
+  OLD_BUILD_DEMO=$BUILD_DEMO
+  OLD_BUILD_CORE=$BUILD_CORE
+  OLD_DEPLOY_CORE=$DEPLOY_CORE
+  OLD_DEPLY_DEMO=$DEPLOY_DEMO
+ 
+  if [ $# -eq 6 ]; then
+    export CLUSTER_DEPLOYMENT="$1"
+    export GIT_PULL="$2"
+    export BUILD_DEMO="$3"
+    export BUILD_CORE="$4"
+    export DEPLOY_CORE="$5"
+    export DEPLOY_DEMO="$6"
+   
+    echo " "    
+    echo "CLUSTER_DEPLOYMENT.." $OLD_CLUSTER_DEPLOYMENT "->" $CLUSTER_DEPLOYMENT
+    echo "GIT_PULL............" $OLD_GIT_PULL "->" $GIT_PULL
+    echo "BUILD_DEMO.........." $OLD_BUILD_DEMO  "->" $BUILD_DEMO
+    echo "BUILD_CORE.........." $OLD_BUILD_CORE  "->" $BUILD_CORE
+    echo "DEPLOY_CORE........." $OLD_DEPLOY_CORE "->" $DEPLOY_CORE
+    echo "DEPLY_DEMO.........." $OLD_DEPLY_DEMO  "->" $DEPLOY_DEMO
+    echo " "    
+  else
+    showbandvar
+    showbandvarshort
+  fi
+}
+ 
+function showbandvar(){
+  echo "CLUSTERING  " $CLUSTER_DEPLOYMENT
+  echo "GIT_PULL    " $GIT_PULL
+  echo "BUILD_DEMO  " $BUILD_DEMO
+  echo "BUILD_CORE  " $BUILD_CORE
+  echo "DEPLOY_CORE " $DEPLOY_CORE
+  echo "DEPLY_DEMO  " $DEPLOY_DEMO
+}
+ 
+function showbandvarshort(){
+  echo $CLUSTER_DEPLOYMENT $GIT_PULL $BUILD_DEMO $BUILD_CORE $DEPLOY_CORE $DEPLOY_DEMO
+}
+ 
+function dockerps() {
+  clear
+  export FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nIMAGE\t{{.Image}}\nPORTS\t{{.Ports}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.CreatedAt}}\nSTATUS\t{{.Status}}\n"
+  docker ps --format="$FORMAT"
+}
+ 
+function dockerpssmall() {
+  clear
+  export FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nSTATUS\t{{.Status}}\n"
+  docker ps --format="$FORMAT"
+}
+
+function dockerpsa() {
+  clear
+  export FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nIMAGE\t{{.Image}}\nPORTS\t{{.Ports}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.CreatedAt}}\nSTATUS\t{{.Status}}\n"
+  docker ps -a --format="$FORMAT"
+}
+ 
+function dockerpssmalla() {
+  clear
+  export FORMAT="ID\t{{.ID}}\nNAME\t{{.Names}}\nSTATUS\t{{.Status}}\n"
+  docker ps -a --format="$FORMAT"
+}
+ 
+function help(){
+  clear
+  echo "aliases:"
+  echo home='cd ~'
+  echo h='cd ~ && pwd'
+  echo s='source /home/faan/.bashrc'
+  echo ip='/sbin/ifconfig'
+  echo gcc='git credential-osxkeychain erase'
+  echo ' '
+  echo recreate='${AMIF_HOME}/config/qa/buildAndDeployForQA.sh'
+  echo jm='/Applications/apache-jmeter-4.0/bin/jmeter.sh'
+  echo mvnci ='mvn clean install -DskipTests=true'
+  echo ' '
+  echo ac='cd /Users/faan/workspace/amif/amif-core && pwd'
+  echo ap='cd /Users/faan/workspace/amif/amif-core/amif-portal && pwd'
+  echo idc='cd /Users/faan/workspace/amif/iod-docker-compose && pwd'
+  echo amif='cd /Users/faan/workspace/amif && pwd'
+  echo af='cd /Users/faan/workspace/amif/amif-functional && pwd'
+  echo ' '
+  echo AMIF_HOME=$AMIF_HOME
+  echo JAVA_HOME=$JAVA_HOME
+  echo MVN_HOME=$MVN_HOME
+  echo AMIF_DEPLOY_DIRECTORY=$AMIF_DEPLOY_DIRECTORY
+  echo ' '
+  echo gup="git config --global --unset http.proxy"
+  echo gsp="git config --global http.proxy http://10.254.8.33.8080"
+  echo ggp="git config --get http.proxy"
+  echo ' '
+  echo 'pxshw pxdwn pxup work workwifi diet saesi  versions'
+  echo 'dps =dockerps   dpss=dockerpssmall'
+  echo 'bv=bandvar'
+  echo 'vib=vi /home/faan/.bashrc'
+  echo 'vie=vie /home/faan/bashrc/.bash_fn'
+  echo 'vif=vif /home/faan/bashrc/.bash_fw'
+  echo 'via=vi /home/faan/bashrc/.bash_aliases'
+  echo ww='workwifi'
+  echo ' '
+  echo 'functions'
+  echo ' '
+  #echo ' '
+  #echo 'PROXY Settings:'
+  #pxshw
+}
+ 
+function hlp(){
+  clear
+  echo ll='ls -alF'
+  echo la='ls -A'
+  echo l='ls -CF'
+
+  echo home='cd ~'
+  echo h='cd ~ && pwd'
+  echo s='source .bashrc'
+  echo ip='/sbin/ifconfig'
+  echo gcc='git credential-osxkeychain erase'
+  echo 'functions'
+}
+ 
+function bit9(){
+  if [ $# -eq 1 ]; then
+    /Applications/Bit9/Tools/b9cli --timedoverride $1
+  else
+    echo 'Usage:   bit9 <<override key>>'
+  fi
+}
+
