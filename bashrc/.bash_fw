@@ -33,3 +33,9 @@ function ecams(){
   #grails -version
 }
 
+function ireport(){
+  clear
+  figlet ireport
+  sdk use java 6u45
+  ~/software/iReport-5.6.0/bin/ireport
+}
